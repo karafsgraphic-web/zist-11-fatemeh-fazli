@@ -32,7 +32,7 @@
       <nav class="chapters" id="chapterList"></nav>
 
       <a class="pdf-link" href="jozve-zist-11.pdf" download>
-        <span>دریافت نسخهٔ PDF</span>
+        <span>دانلود کل جزوه</span>
         <span aria-hidden="true">↓</span>
       </a>
     </aside>
@@ -49,16 +49,53 @@
           </div>
         </div>
 
-        <div class="view-tools" aria-label="ابزارهای نمایش">
+        <div class="view-tools" aria-label="ابزارهای نمایش و تدریس">
+          <button class="tool-launch" type="button" id="whiteboardToggle" aria-pressed="false" aria-controls="whiteboardToolbar">
+            <span aria-hidden="true">✎</span><span class="tool-launch__label">ابزار تدریس</span>
+          </button>
           <button type="button" id="zoomOut" aria-label="کوچک‌نمایی">−</button>
           <button type="button" id="fitPage">اندازه صفحه</button>
           <button type="button" id="zoomIn" aria-label="بزرگ‌نمایی">+</button>
+          <button class="tool-launch" type="button" id="fullscreenToggle" aria-label="نمایش تمام‌صفحه" aria-pressed="false">
+            <span aria-hidden="true">⛶</span><span class="tool-launch__label">تمام‌صفحه</span>
+          </button>
         </div>
       </header>
 
+      <section class="whiteboard-toolbar" id="whiteboardToolbar" aria-label="ابزارهای تخته وایت‌برد" hidden>
+        <div class="whiteboard-toolbar__tools" role="toolbar" aria-label="نوع ابزار">
+          <button class="drawing-tool" type="button" data-tool="pan" aria-pressed="false"><span aria-hidden="true">☝</span><span>حرکت صفحه</span></button>
+          <button class="drawing-tool is-active" type="button" data-tool="pen" aria-pressed="true"><span aria-hidden="true">✎</span><span>قلم</span></button>
+          <button class="drawing-tool" type="button" data-tool="line" aria-pressed="false"><span aria-hidden="true">╱</span><span>خط صاف</span></button>
+          <button class="drawing-tool" type="button" data-tool="marker" aria-pressed="false"><span aria-hidden="true">▰</span><span>ماژیک</span></button>
+          <button class="drawing-tool" type="button" data-tool="highlighter" aria-pressed="false"><span aria-hidden="true">▱</span><span>هایلایتر</span></button>
+          <button class="drawing-tool" type="button" data-tool="eraser" aria-pressed="false"><span aria-hidden="true">◇</span><span>پاک‌کن</span></button>
+        </div>
+
+        <div class="whiteboard-toolbar__settings">
+          <div class="color-swatches" aria-label="رنگ قلم">
+            <button class="color-swatch is-active" type="button" data-color="#e52f42" style="--swatch:#e52f42" aria-label="قرمز" aria-pressed="true"></button>
+            <button class="color-swatch" type="button" data-color="#0b6975" style="--swatch:#0b6975" aria-label="سبزآبی" aria-pressed="false"></button>
+            <button class="color-swatch" type="button" data-color="#2463eb" style="--swatch:#2463eb" aria-label="آبی" aria-pressed="false"></button>
+            <button class="color-swatch" type="button" data-color="#f4c430" style="--swatch:#f4c430" aria-label="زرد" aria-pressed="false"></button>
+            <button class="color-swatch" type="button" data-color="#202b31" style="--swatch:#202b31" aria-label="مشکی" aria-pressed="false"></button>
+          </div>
+          <label class="stroke-width" for="strokeWidth"><span>ضخامت</span><input id="strokeWidth" type="range" min="2" max="22" value="5" /></label>
+        </div>
+
+        <div class="whiteboard-toolbar__actions">
+          <button type="button" id="undoDrawing" aria-label="برگرداندن آخرین خط">↶ <span>برگشت</span></button>
+          <button class="clear-drawing" type="button" id="clearDrawing" aria-label="پاک کردن نوشته‌های این صفحه">پاک‌کردن صفحه</button>
+          <button type="button" id="closeWhiteboard" aria-label="بستن ابزار تدریس">×</button>
+        </div>
+      </section>
+
       <section class="page-stage" id="pageStage" aria-live="polite">
         <figure class="page-sheet" id="pageSheet">
-          <img id="pageImage" src="page-001.webp" alt="صفحه ۱ از جزوه زیست‌شناسی پایه یازدهم" width="1020" height="1501" />
+          <div class="page-canvas-wrap" id="pageCanvasWrap">
+            <img id="pageImage" src="page-001.webp" alt="صفحه ۱ از جزوه زیست‌شناسی پایه یازدهم" width="1020" height="1501" />
+            <canvas id="annotationCanvas" aria-label="صفحه نوشتن و علامت‌گذاری"></canvas>
+          </div>
           <figcaption>صفحه <span id="captionPage">۱</span> از ۲۷۱</figcaption>
         </figure>
         <div class="loading" id="loading" hidden>در حال آماده‌سازی صفحه…</div>

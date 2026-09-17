@@ -199,6 +199,14 @@ input:focus-visible {
   gap: 6px;
 }
 
+.chapter-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: stretch;
+  gap: 5px;
+  border-radius: 14px;
+}
+
 .chapter-link {
   position: relative;
   display: grid;
@@ -222,7 +230,7 @@ input:focus-visible {
   background: rgba(223, 246, 248, 0.7);
 }
 
-.chapter-link.is-active {
+.chapter-item.is-active .chapter-link {
   border-color: rgba(11, 105, 117, 0.12);
   background: var(--teal);
   color: #fff;
@@ -241,7 +249,7 @@ input:focus-visible {
   font-weight: 700;
 }
 
-.is-active .chapter-link__number {
+.chapter-item.is-active .chapter-link__number {
   color: var(--teal-dark);
   background: var(--lime);
 }
@@ -268,7 +276,7 @@ input:focus-visible {
   font-size: 0.72rem;
 }
 
-.is-active .chapter-link__copy small {
+.chapter-item.is-active .chapter-link__copy small {
   color: rgba(255, 255, 255, 0.7);
 }
 
@@ -276,8 +284,41 @@ input:focus-visible {
   color: var(--muted);
 }
 
-.is-active .chapter-link__arrow {
+.chapter-item.is-active .chapter-link__arrow {
   color: #fff;
+}
+
+.chapter-download {
+  display: grid;
+  min-width: 49px;
+  place-items: center;
+  align-content: center;
+  gap: 1px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  color: var(--teal-dark);
+  background: #fff;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-decoration: none;
+  transition: 160ms ease;
+}
+
+.chapter-download span:first-child {
+  font-size: 1rem;
+}
+
+.chapter-download:hover {
+  border-color: var(--teal);
+  background: var(--cyan);
+  transform: translateY(-1px);
+}
+
+.chapter-item.is-active .chapter-download {
+  border-color: rgba(11, 105, 117, 0.2);
+  color: var(--teal-dark);
+  background: var(--lime);
 }
 
 .pdf-link {
@@ -300,8 +341,9 @@ input:focus-visible {
 }
 
 .reader-shell {
-  min-height: 100vh;
+  height: 100dvh;
   margin-right: 320px;
+  overflow: hidden;
 }
 
 .reader-header {
@@ -364,9 +406,28 @@ input:focus-visible {
   background: var(--cyan);
 }
 
-.view-tools button:nth-child(2) {
+.view-tools #fitPage {
   padding-inline: 12px;
   font-size: 0.82rem;
+}
+
+.view-tools .tool-launch {
+  display: flex;
+  width: auto;
+  padding-inline: 10px;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.view-tools .tool-launch.is-active,
+.view-tools .tool-launch[aria-pressed="true"] {
+  color: #fff;
+  background: var(--teal);
+}
+
+.tool-launch__label {
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .menu-button,
@@ -374,14 +435,150 @@ input:focus-visible {
   display: none;
 }
 
+.whiteboard-toolbar {
+  position: fixed;
+  top: 98px;
+  left: calc((100vw - 320px) / 2);
+  z-index: 26;
+  display: flex;
+  width: min(900px, calc(100vw - 360px));
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid rgba(207, 229, 232, 0.96);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 18px 42px rgba(24, 78, 85, 0.18);
+  backdrop-filter: blur(18px);
+  transform: translateX(-50%);
+}
+
+.whiteboard-toolbar[hidden] {
+  display: none;
+}
+
+.whiteboard-toolbar__tools,
+.whiteboard-toolbar__settings,
+.whiteboard-toolbar__actions,
+.color-swatches,
+.stroke-width {
+  display: flex;
+  align-items: center;
+}
+
+.whiteboard-toolbar__tools {
+  gap: 4px;
+}
+
+.whiteboard-toolbar__settings {
+  gap: 9px;
+  padding-inline: 8px;
+  border-inline: 1px solid var(--line);
+}
+
+.whiteboard-toolbar__actions {
+  gap: 4px;
+}
+
+.whiteboard-toolbar button {
+  min-height: 38px;
+  border: 0;
+  border-radius: 10px;
+  color: var(--teal-dark);
+  background: transparent;
+  cursor: pointer;
+}
+
+.drawing-tool,
+.whiteboard-toolbar__actions button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px 9px;
+  font-size: 0.74rem;
+  white-space: nowrap;
+}
+
+.drawing-tool span:first-child {
+  font-size: 1rem;
+}
+
+.whiteboard-toolbar button:hover:not(:disabled) {
+  background: var(--cyan);
+}
+
+.drawing-tool.is-active {
+  color: #fff;
+  background: var(--teal);
+}
+
+.color-swatches {
+  direction: ltr;
+  gap: 4px;
+}
+
+.color-swatch {
+  width: 25px;
+  min-width: 25px;
+  height: 25px;
+  min-height: 25px !important;
+  padding: 0;
+  border: 3px solid #fff !important;
+  border-radius: 50% !important;
+  background: var(--swatch) !important;
+  box-shadow: 0 0 0 1px rgba(20, 52, 59, 0.2);
+}
+
+.color-swatch.is-active {
+  box-shadow: 0 0 0 3px rgba(11, 105, 117, 0.3);
+}
+
+.stroke-width {
+  gap: 6px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.stroke-width input {
+  width: 76px;
+  accent-color: var(--teal);
+}
+
+.whiteboard-toolbar__actions .clear-drawing {
+  color: #a52d3a;
+}
+
+.whiteboard-toolbar__actions button:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+}
+
+#closeWhiteboard {
+  width: 38px;
+  min-width: 38px;
+  padding: 0;
+  font-size: 1.25rem;
+}
+
 .page-stage {
   position: relative;
   display: flex;
-  min-height: calc(100vh - 170px);
+  height: calc(100dvh - 86px);
+  min-height: 0;
+  align-items: flex-start;
   justify-content: center;
   padding: clamp(20px, 4vw, 48px) clamp(12px, 4vw, 54px) 116px;
   overflow: auto;
   overscroll-behavior: contain;
+  scrollbar-gutter: stable both-edges;
+  -webkit-overflow-scrolling: touch;
+}
+
+.whiteboard-active .page-stage {
+  padding-top: 116px;
 }
 
 .page-stage::before {
@@ -395,6 +592,7 @@ input:focus-visible {
 }
 
 .page-sheet {
+  position: relative;
   flex: 0 0 auto;
   width: min(100%, 960px);
   height: max-content;
@@ -410,12 +608,42 @@ input:focus-visible {
   opacity: 0.52;
 }
 
+.page-canvas-wrap {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 17px 17px 0 0;
+  background: #fff;
+}
+
 .page-sheet img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: 17px 17px 0 0;
   background: #fff;
+}
+
+#annotationCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.whiteboard-active #annotationCanvas {
+  cursor: crosshair;
+  pointer-events: auto;
+  touch-action: none;
+}
+
+.whiteboard-active #annotationCanvas[data-tool="eraser"] {
+  cursor: cell;
+}
+
+.whiteboard-active #annotationCanvas[data-tool="pan"] {
+  cursor: grab;
+  pointer-events: none;
 }
 
 .page-sheet figcaption {
@@ -444,7 +672,7 @@ input:focus-visible {
 
 .page-controls {
   position: fixed;
-  right: calc(320px + 50%);
+  right: calc(50% + 160px);
   bottom: 20px;
   z-index: 25;
   display: grid;
@@ -521,6 +749,62 @@ input:focus-visible {
   backdrop-filter: blur(3px);
 }
 
+body.is-fullscreen .sidebar {
+  display: none;
+}
+
+body.is-fullscreen .reader-shell {
+  margin-right: 0;
+}
+
+body.is-fullscreen .reader-header {
+  min-height: 72px;
+  padding-block: 9px;
+}
+
+body.is-fullscreen .page-stage {
+  height: calc(100dvh - 76px);
+  padding-top: 20px;
+}
+
+body.is-fullscreen.whiteboard-active .page-stage {
+  padding-top: 108px;
+}
+
+body.is-fullscreen .page-stage::before {
+  inset: 82px 20px 86px;
+}
+
+body.is-fullscreen .page-controls {
+  right: 50%;
+  min-width: min(650px, calc(100vw - 30px));
+}
+
+body.is-fullscreen .whiteboard-toolbar {
+  top: 86px;
+  left: 50%;
+  width: min(940px, calc(100vw - 30px));
+}
+
+@media (max-width: 1280px) and (min-width: 981px) {
+  .view-tools .tool-launch__label {
+    display: none;
+  }
+
+  .whiteboard-toolbar {
+    width: min(820px, calc(100vw - 350px));
+  }
+
+  .drawing-tool,
+  .whiteboard-toolbar__actions button {
+    padding-inline: 7px;
+  }
+
+  .drawing-tool span:last-child {
+    display: none;
+  }
+}
+
 @media (max-width: 980px) {
   .sidebar {
     width: min(86vw, 340px);
@@ -561,6 +845,11 @@ input:focus-visible {
     min-width: min(620px, calc(100vw - 28px));
   }
 
+  .whiteboard-toolbar {
+    left: 50%;
+    width: min(900px, calc(100vw - 20px));
+  }
+
   .loading {
     left: 50%;
     transform: translateX(-50%);
@@ -575,7 +864,7 @@ input:focus-visible {
   }
 
   .header-title h2 {
-    max-width: 45vw;
+    max-width: 34vw;
     font-size: 1rem;
   }
 
@@ -583,19 +872,100 @@ input:focus-visible {
     font-size: 0.72rem;
   }
 
-  .view-tools button:nth-child(2) {
+  .view-tools #fitPage {
     min-width: 36px;
     padding-inline: 8px;
     font-size: 0;
   }
 
-  .view-tools button:nth-child(2)::after {
+  .view-tools #fitPage::after {
     content: "↔";
     font-size: 1rem;
   }
 
+  .view-tools .tool-launch {
+    width: 36px;
+    min-width: 36px;
+    padding-inline: 0;
+  }
+
+  .tool-launch__label {
+    display: none;
+  }
+
+  .whiteboard-toolbar {
+    top: 78px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px;
+    width: calc(100vw - 12px);
+    padding: 6px;
+    border-radius: 15px;
+  }
+
+  .whiteboard-toolbar__tools {
+    grid-column: 1 / -1;
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .drawing-tool {
+    flex: 0 0 auto;
+    min-height: 34px !important;
+    padding: 4px 8px;
+  }
+
+  .whiteboard-toolbar__settings {
+    min-width: 0;
+    gap: 6px;
+    padding-inline: 4px;
+    border-right: 0;
+  }
+
+  .stroke-width span {
+    display: none;
+  }
+
+  .stroke-width input {
+    width: 64px;
+  }
+
+  .color-swatch {
+    width: 22px;
+    min-width: 22px;
+    height: 22px;
+    min-height: 22px !important;
+  }
+
+  .whiteboard-toolbar__actions button {
+    min-height: 34px;
+    padding: 4px 7px;
+    font-size: 0.7rem;
+  }
+
+  .whiteboard-toolbar__actions button span {
+    display: none;
+  }
+
+  .whiteboard-toolbar__actions .clear-drawing {
+    font-size: 0;
+  }
+
+  .whiteboard-toolbar__actions .clear-drawing::after {
+    content: "پاک‌کردن";
+    font-size: 0.7rem;
+  }
+
   .page-stage {
+    height: calc(100dvh - 74px);
     padding: 14px 8px 100px;
+  }
+
+  .whiteboard-active .page-stage,
+  body.is-fullscreen.whiteboard-active .page-stage {
+    padding-top: 152px;
   }
 
   .page-sheet {
@@ -603,7 +973,7 @@ input:focus-visible {
     box-shadow: 0 14px 36px rgba(24, 78, 85, 0.13);
   }
 
-  .page-sheet img {
+  .page-canvas-wrap {
     border-radius: 9px 9px 0 0;
   }
 
